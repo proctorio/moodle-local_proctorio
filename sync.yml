@@ -8,11 +8,11 @@ resources:
     - repository: templates
       type: git
       name: Plumbing/core-templates
-    - repository: moodle-mod_proctorio
+    - repository: moodle-local_proctorio
       type: git
-      name: Open/moodle-mod_proctorio
+      name: Open/moodle-local_proctorio
 
 stages:
 - template: stages/sync/sync.yml@templates  # Template reference
   parameters:
-    checkout: moodle-mod_proctorio
+    checkout: moodle-local_proctorio
