@@ -56,7 +56,7 @@ Configure CSS selectors for the student quiz interface. Default selectors includ
 ### Professor Selectors
 
 Configure CSS selectors for the instructor interface. Default selectors include:
-- **Quiz Reports**: Report page elements (`.page-mod-quiz-report`)
+- **Quiz Reports**: Report page elements (`#page-mod-quiz-report`)
 - **General Table**: Quiz data tables (`.generaltable`)
 - **Quiz Overrides**: Override management section (`#quizoverrides`)
 - **Dropdown Items**: Navigation dropdowns (`.dropdown-item`)

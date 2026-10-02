@@ -69,7 +69,7 @@ if ($hassiteconfig) {
         // Professor selectors.
         $professorfields = [
             'dropdown_item' => ".dropdown-item",
-            'page_mod_quiz_report' => ".page-mod-quiz-report",
+            'page_mod_quiz_report' => "#page-mod-quiz-report",
             'quiz_info' => ".quizinfo",
             'quiz_attempt' => ".quizattempt",
             'general_table' => ".generaltable",
