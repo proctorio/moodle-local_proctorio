@@ -29,6 +29,8 @@ defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__ . '/../lib.php');
 
 /**
+ * Tests for local_proctorio_get_course_roster().
+ *
  * @covers ::local_proctorio_get_course_roster
  */
 class users_roster_test extends \advanced_testcase {

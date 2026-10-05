@@ -209,7 +209,7 @@ class attempt_fetcher_test extends \advanced_testcase {
     }
 
     public function test_parse_quiz_configurations_does_not_false_positive_on_keyword_substrings(): void {
-        // "timeupdated" contains "update" as a prefix but must not trip the UPDATE keyword check.
+        // The column "timeupdated" contains "update" as a prefix but must not trip the UPDATE keyword check.
         $config = 'customquiz|SELECT id, status AS attempt_status, timeupdated AS attempt_number'
                 . ' FROM {customquiz_attempts} WHERE userid = :userid AND quizid = :quizid LIMIT 1';
 

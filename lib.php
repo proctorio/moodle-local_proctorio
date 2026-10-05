@@ -23,24 +23,6 @@
  */
 
 /**
- * Log a caught exception's real message server-side and return a generic message that
- * is safe to send back to an HTTP client.
- *
- * Exception messages (especially from dml_exception) can carry SQL, table, or schema
- * details that have no business leaving the server (END-01). The real message still goes
- * to the server's error log - visible to admins with server access, never to the caller.
- *
- * @param \Throwable $e The caught exception
- * @param string $endpoint Short label identifying which endpoint logged this, for grepping
- * @return string Generic, client-safe message
- */
-function local_proctorio_log_and_get_client_message(\Throwable $e, string $endpoint): string {
-    error_log("local_proctorio ({$endpoint}): " . $e->getMessage());
-
-    return 'An error occurred while processing your request.';
-}
-
-/**
  * Build the enrolled-user roster for a course, enforcing the plugin's own
  * authorization rules rather than a generic core capability.
  *
@@ -139,14 +121,9 @@ function local_proctorio_fetch_selectors($type) {
             $selectors->$formatedkey = $value;
         }
     }
-    $pluginversionfile = __DIR__ . '/version.php';
-
-    if (file_exists($pluginversionfile) && !empty(get_object_vars($selectors))) {
-        $plugin = new stdClass();
-        include($pluginversionfile);
-
-        // Insert plugin version.
-        $selectors->version = $plugin->release;
+    if (!empty(get_object_vars($selectors))) {
+        $plugininfo = core_plugin_manager::instance()->get_plugin_info('local_proctorio');
+        $selectors->version = $plugininfo->release ?? null;
     }
     return [$selectors];
 }

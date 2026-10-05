@@ -61,14 +61,10 @@ class get_plugin_details extends \external_api {
         self::validate_context($context);
         require_capability('local/proctorio:viewselectors', $context);
 
-        $plugin = new \stdClass();
-        $pluginversionfile = $CFG->dirroot . '/local/proctorio/version.php';
-        if (file_exists($pluginversionfile)) {
-            include($pluginversionfile);
-        }
+        $plugininfo = \core_plugin_manager::instance()->get_plugin_info('local_proctorio');
 
         return [
-            'pluginversion' => $plugin->release ?? null,
+            'pluginversion' => $plugininfo->release ?? null,
             'moodleversion' => $CFG->release ?? null,
         ];
     }

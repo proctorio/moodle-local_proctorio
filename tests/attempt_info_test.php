@@ -29,6 +29,8 @@ defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__ . '/../lib.php');
 
 /**
+ * Tests for local_proctorio_get_attempt_info().
+ *
  * @covers ::local_proctorio_get_attempt_info
  */
 class attempt_info_test extends \advanced_testcase {

@@ -101,12 +101,6 @@ if ($hassiteconfig) {
             $professorfields
         );
 
-        $settings->add(new admin_setting_heading(
-            'local_proctorio/hide_defaults',
-            '',
-            '<style>br { display: none !important; }</style>'
-        ));
-
         // Database Quiz Configurations - Simple Line Format.
         $settings->add(new admin_setting_heading(
             'local_proctorio/quiz_configs_heading',
@@ -122,12 +116,6 @@ if ($hassiteconfig) {
             PARAM_RAW,
             100,
             12
-        ));
-
-        $settings->add(new admin_setting_heading(
-            'local_proctorio/hide_defaults_end',
-            '',
-            '<style>br { display: block !important; }</style>'
         ));
     }
 }

@@ -24,8 +24,6 @@
 
 namespace local_proctorio;
 
-defined('MOODLE_INTERNAL') || die();
-
 use local_proctorio\privacy\provider;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;

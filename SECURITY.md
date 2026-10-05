@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Use GitHub's
-[private vulnerability reporting](https://github.com/proctorio/moodle-mod_proctorio/security/advisories/new)
+[private vulnerability reporting](https://github.com/proctorio/moodle-local_proctorio/security/advisories/new)
 on this repository. Please do not open a public issue for anything you
 believe is exploitable.
 

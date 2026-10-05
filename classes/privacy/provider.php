@@ -81,7 +81,6 @@ class provider implements
     /**
      * This plugin stores no personal data of its own.
      *
-     * @param \context $context The context to retrieve users for.
      * @param userlist $userlist The user list to populate.
      */
     public static function get_users_in_context(userlist $userlist): void {

@@ -24,42 +24,42 @@ Your query MUST return these aliases:
 ### 3. **Best Practices**
 - Include `id` column in SELECT for record identification
 - Use `ORDER BY timemodified DESC` or similar to get the latest attempt
-- Use `LIMIT 1` to return only the most recent attempt
+- Don't add `LIMIT` - the plugin always fetches exactly one row itself, and `LIMIT` isn't portable across all databases Moodle supports (e.g. Microsoft SQL Server)
 - Use Moodle table syntax: `{tablename}` (curly braces, no `mdl_` prefix)
 
 ## Examples
 
 ### Example 1: Simple Custom Quiz
 ```
-customquiz|SELECT id, status AS attempt_status, attemptnum AS attempt_number FROM {customquiz_attempts} WHERE user_id = :userid AND quiz_id = :quizid ORDER BY timemodified DESC LIMIT 1
+customquiz|SELECT id, status AS attempt_status, attemptnum AS attempt_number FROM {customquiz_attempts} WHERE user_id = :userid AND quiz_id = :quizid ORDER BY timemodified DESC
 ```
 
 ### Example 2: Different Column Names
 ```
-examquiz|SELECT id, state AS attempt_status, trynum AS attempt_number FROM {examquiz_tries} WHERE uid = :userid AND examid = :quizid ORDER BY created DESC LIMIT 1
+examquiz|SELECT id, state AS attempt_status, trynum AS attempt_number FROM {examquiz_tries} WHERE uid = :userid AND examid = :quizid ORDER BY created DESC
 ```
 
 ### Example 3: Using Subquery to Count Attempts
 If your table doesn't have an attempt number column, use a subquery:
 ```
-myquiz|SELECT id, attempt_state AS attempt_status, (SELECT COUNT(*) FROM {myquiz_attempts} WHERE userid = :userid AND quizid = :quizid) AS attempt_number FROM {myquiz_attempts} WHERE userid = :userid AND quizid = :quizid ORDER BY timemodified DESC LIMIT 1
+myquiz|SELECT id, attempt_state AS attempt_status, (SELECT COUNT(*) FROM {myquiz_attempts} WHERE userid = :userid AND quizid = :quizid) AS attempt_number FROM {myquiz_attempts} WHERE userid = :userid AND quizid = :quizid ORDER BY timemodified DESC
 ```
 
 ### Example 4: Complex Status Logic
 ```
-advancedquiz|SELECT id, CASE WHEN timefinish > 0 THEN 'finished' ELSE 'inprogress' END AS attempt_status, attempt AS attempt_number FROM {advancedquiz_attempts} WHERE userid = :userid AND quiz = :quizid ORDER BY timestart DESC LIMIT 1
+advancedquiz|SELECT id, CASE WHEN timefinish > 0 THEN 'finished' ELSE 'inprogress' END AS attempt_status, attempt AS attempt_number FROM {advancedquiz_attempts} WHERE userid = :userid AND quiz = :quizid ORDER BY timestart DESC
 ```
 
 ### Example 5: Multiple Quiz Types Configuration
 ```
 # Custom quiz module
-customquiz|SELECT id, status AS attempt_status, attemptnum AS attempt_number FROM {customquiz_attempts} WHERE user_id = :userid AND quiz_id = :quizid ORDER BY timemodified DESC LIMIT 1
+customquiz|SELECT id, status AS attempt_status, attemptnum AS attempt_number FROM {customquiz_attempts} WHERE user_id = :userid AND quiz_id = :quizid ORDER BY timemodified DESC
 
 # Exam quiz with different column names
-examquiz|SELECT id, state AS attempt_status, trynum AS attempt_number FROM {examquiz_tries} WHERE uid = :userid AND examid = :quizid ORDER BY created DESC LIMIT 1
+examquiz|SELECT id, state AS attempt_status, trynum AS attempt_number FROM {examquiz_tries} WHERE uid = :userid AND examid = :quizid ORDER BY created DESC
 
 # Advanced quiz with counting
-advquiz|SELECT id, status AS attempt_status, (SELECT COUNT(*) FROM {advquiz_attempts} WHERE userid = :userid AND quizid = :quizid) AS attempt_number FROM {advquiz_attempts} WHERE userid = :userid AND quizid = :quizid ORDER BY timemodified DESC LIMIT 1
+advquiz|SELECT id, status AS attempt_status, (SELECT COUNT(*) FROM {advquiz_attempts} WHERE userid = :userid AND quizid = :quizid) AS attempt_number FROM {advquiz_attempts} WHERE userid = :userid AND quizid = :quizid ORDER BY timemodified DESC
 ```
 
 ## Step-by-Step: Building Your Query
@@ -97,12 +97,11 @@ SELECT
 FROM {your_table}
 WHERE [userid_column] = :userid AND [quizid_column] = :quizid
 ORDER BY [time_column] DESC
-LIMIT 1
 ```
 
 ### Step 6: Format for Configuration
 ```
-modname|SELECT id, status AS attempt_status, attemptnum AS attempt_number FROM {yourtable_attempts} WHERE userid = :userid AND quizid = :quizid ORDER BY timemodified DESC LIMIT 1
+modname|SELECT id, status AS attempt_status, attemptnum AS attempt_number FROM {yourtable_attempts} WHERE userid = :userid AND quizid = :quizid ORDER BY timemodified DESC
 ```
 
 ## Common Issues
@@ -115,7 +114,6 @@ SELECT id, state AS attempt_status,
 FROM {table} 
 WHERE userid = :userid AND quizid = :quizid 
 ORDER BY timemodified DESC 
-LIMIT 1
 ```
 
 ### Issue 2: Status is Numeric (0, 1, 2)
@@ -141,7 +139,6 @@ WHERE userid = :userid
     AND quizid = :quizid 
     AND state != 'abandoned'
 ORDER BY timemodified DESC
-LIMIT 1
 ```
 
 ## Testing Your Configuration
@@ -159,7 +156,7 @@ You can add comments to your configuration:
 # This is a comment - lines starting with # are ignored
 // This is also a comment - lines starting with // are ignored
 
-customquiz|SELECT id, state AS attempt_status, attempt AS attempt_number FROM {customquiz_attempts} WHERE userid = :userid AND quizid = :quizid ORDER BY timemodified DESC LIMIT 1
+customquiz|SELECT id, state AS attempt_status, attempt AS attempt_number FROM {customquiz_attempts} WHERE userid = :userid AND quizid = :quizid ORDER BY timemodified DESC
 ```
 
 ## Security Notes

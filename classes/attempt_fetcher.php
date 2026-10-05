@@ -412,9 +412,9 @@ class attempt_fetcher {
                 $sql = "SELECT qa.attempt as attemptnumber, qa.state as attemptstate
                         FROM {quiz_attempts} qa
                         WHERE qa.quiz = :quizid AND qa.userid = :userid
-                        ORDER BY qa.attempt DESC
-                        LIMIT 1";
-                $attempt = $DB->get_record_sql($sql, ['quizid' => $quizid, 'userid' => $userid]);
+                        ORDER BY qa.attempt DESC";
+                $records = $DB->get_records_sql($sql, ['quizid' => $quizid, 'userid' => $userid], 0, 1);
+                $attempt = reset($records);
 
                 if ($attempt) {
                     return [
@@ -432,9 +432,9 @@ class attempt_fetcher {
                 $sql = "SELECT aa.attemptstate, aa.timemodified
                         FROM {adaptivequiz_attempt} aa
                         WHERE aa.instance = :quizid AND aa.userid = :userid
-                        ORDER BY aa.timemodified DESC
-                        LIMIT 1";
-                $attempt = $DB->get_record_sql($sql, ['quizid' => $quizid, 'userid' => $userid]);
+                        ORDER BY aa.timemodified DESC";
+                $records = $DB->get_records_sql($sql, ['quizid' => $quizid, 'userid' => $userid], 0, 1);
+                $attempt = reset($records);
 
                 if ($attempt) {
                     // Count total attempts to determine the attempt number.
@@ -459,9 +459,9 @@ class attempt_fetcher {
                     $sql = "SELECT *
                             FROM {{$table}}
                             WHERE userid = :userid AND instance = :quizid
-                            ORDER BY timemodified DESC
-                            LIMIT 1";
-                    $attempt = $DB->get_record_sql($sql, ['quizid' => $quizid, 'userid' => $userid]);
+                            ORDER BY timemodified DESC";
+                    $records = $DB->get_records_sql($sql, ['quizid' => $quizid, 'userid' => $userid], 0, 1);
+                    $attempt = reset($records);
 
                     if ($attempt) {
                         // Try to detect common column names.
