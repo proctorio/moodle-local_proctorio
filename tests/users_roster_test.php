@@ -34,7 +34,6 @@ require_once(__DIR__ . '/../lib.php');
  * @covers ::local_proctorio_get_course_roster
  */
 class users_roster_test extends \advanced_testcase {
-
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();

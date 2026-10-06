@@ -155,7 +155,7 @@ function local_proctorio_add_selector_group($settings, $prefix, $title, $descrip
     foreach ($fields as $key => $value) {
         $label = get_string($key, "local_proctorio");
 
-        $helptext = get_string($key."_help", 'local_proctorio');
+        $helptext = get_string($key . "_help", 'local_proctorio');
 
         $setting = new admin_setting_configtextarea(
             "local_proctorio/{$prefix}_{$key}",
@@ -168,6 +168,5 @@ function local_proctorio_add_selector_group($settings, $prefix, $title, $descrip
         );
 
         $settings->add($setting);
-
     }
 }

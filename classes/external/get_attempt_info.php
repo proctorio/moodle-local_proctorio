@@ -38,7 +38,6 @@ require_once($CFG->dirroot . '/local/proctorio/lib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class get_attempt_info extends \external_api {
-
     /**
      * Parameter definition for execute().
      *
@@ -84,10 +83,18 @@ class get_attempt_info extends \external_api {
         return new \external_single_structure([
             'found' => new \external_value(PARAM_BOOL, 'Whether an attempt was found'),
             'attempt_status' => new \external_value(
-                PARAM_RAW, 'Attempt status', VALUE_OPTIONAL, null, NULL_ALLOWED
+                PARAM_RAW,
+                'Attempt status',
+                VALUE_OPTIONAL,
+                null,
+                NULL_ALLOWED
             ),
             'attempt_number' => new \external_value(
-                PARAM_RAW, 'Attempt number', VALUE_OPTIONAL, null, NULL_ALLOWED
+                PARAM_RAW,
+                'Attempt number',
+                VALUE_OPTIONAL,
+                null,
+                NULL_ALLOWED
             ),
         ]);
     }

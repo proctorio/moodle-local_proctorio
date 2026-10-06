@@ -30,7 +30,6 @@ namespace local_proctorio;
  * @covers \local_proctorio\attempt_fetcher
  */
 class attempt_fetcher_test extends \advanced_testcase {
-
     /** @var \ReflectionClass */
     private \ReflectionClass $reflection;
 
@@ -42,6 +41,10 @@ class attempt_fetcher_test extends \advanced_testcase {
 
     /**
      * Call a private static method on attempt_fetcher.
+     *
+     * @param string $method Method name to invoke.
+     * @param mixed ...$args Arguments to pass through to the method.
+     * @return mixed The method's return value.
      */
     private function call(string $method, mixed ...$args): mixed {
         $m = $this->reflection->getMethod($method);
@@ -471,6 +474,12 @@ class attempt_fetcher_test extends \advanced_testcase {
 
     /**
      * Insert a minimal quiz_attempts row using a real question_usage for the uniqueid FK.
+     *
+     * @param int $quizid Quiz instance id.
+     * @param int $cmid Course module id for the quiz context.
+     * @param int $userid User id the attempt belongs to.
+     * @param string $state Attempt state, e.g. 'inprogress' or 'finished'.
+     * @param int $attempt Attempt number.
      */
     private function insert_quiz_attempt(
         int $quizid,

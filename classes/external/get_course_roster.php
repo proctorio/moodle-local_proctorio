@@ -38,7 +38,6 @@ require_once($CFG->dirroot . '/local/proctorio/lib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class get_course_roster extends \external_api {
-
     /**
      * Parameter definition for execute().
      *
@@ -86,7 +85,11 @@ class get_course_roster extends \external_api {
                 'id' => new \external_value(PARAM_INT, 'User id'),
                 'fullname' => new \external_value(PARAM_NOTAGS, 'User full name'),
                 'email' => new \external_value(
-                    PARAM_RAW, 'User email address, when visible to the caller', VALUE_OPTIONAL, null, NULL_ALLOWED
+                    PARAM_RAW,
+                    'User email address, when visible to the caller',
+                    VALUE_OPTIONAL,
+                    null,
+                    NULL_ALLOWED
                 ),
             ])
         );

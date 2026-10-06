@@ -42,7 +42,6 @@ require_once($CFG->dirroot . '/local/proctorio/lib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class get_selectors extends \external_api {
-
     /**
      * Parameter definition for execute().
      *

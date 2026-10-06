@@ -37,7 +37,6 @@ require_once($CFG->libdir . '/externallib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class get_plugin_details extends \external_api {
-
     /**
      * Parameter definition for execute().
      *
@@ -77,10 +76,18 @@ class get_plugin_details extends \external_api {
     public static function execute_returns(): \external_single_structure {
         return new \external_single_structure([
             'pluginversion' => new \external_value(
-                PARAM_RAW, 'Plugin release version', VALUE_OPTIONAL, null, NULL_ALLOWED
+                PARAM_RAW,
+                'Plugin release version',
+                VALUE_OPTIONAL,
+                null,
+                NULL_ALLOWED
             ),
             'moodleversion' => new \external_value(
-                PARAM_RAW, 'Moodle release version', VALUE_OPTIONAL, null, NULL_ALLOWED
+                PARAM_RAW,
+                'Moodle release version',
+                VALUE_OPTIONAL,
+                null,
+                NULL_ALLOWED
             ),
         ]);
     }

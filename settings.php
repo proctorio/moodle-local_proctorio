@@ -32,7 +32,6 @@ if ($hassiteconfig) {
     // Helper function to add a group of selector fields.
     require_once(__DIR__ . '/lib.php');
     if ($ADMIN->fulltree) {
-
         // Candidate selectors.
         $candidatefields = [
             'quiz_access_code' => "#id_quizpassword",

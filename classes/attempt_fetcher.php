@@ -38,7 +38,6 @@ namespace local_proctorio;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class attempt_fetcher {
-
     /**
      * Get the last attempt for a user on a specific quiz.
      *
@@ -242,10 +241,12 @@ class attempt_fetcher {
 
                 // Validate query has required placeholders and aliases (post comment-strip,
                 // so they can't be satisfied by text hidden inside a comment).
-                if (stripos($stripped, ':userid') !== false &&
+                if (
+                    stripos($stripped, ':userid') !== false &&
                     stripos($stripped, ':quizid') !== false &&
                     stripos($stripped, 'attempt_status') !== false &&
-                    stripos($stripped, 'attempt_number') !== false) {
+                    stripos($stripped, 'attempt_number') !== false
+                ) {
                     return $stripped;
                 }
             }
@@ -338,7 +339,7 @@ class attempt_fetcher {
         // Replace :userid placeholders with numbered versions.
         $processedquery = preg_replace_callback(
             '/:userid\b/i',
-            function($matches) use (&$useridcount) {
+            function ($matches) use (&$useridcount) {
                 return ':userid' . $useridcount++;
             },
             $sqlquery
@@ -347,7 +348,7 @@ class attempt_fetcher {
         // Replace :quizid placeholders with numbered versions.
         $processedquery = preg_replace_callback(
             '/:quizid\b/i',
-            function($matches) use (&$quizidcount) {
+            function ($matches) use (&$quizidcount) {
                 return ':quizid' . $quizidcount++;
             },
             $processedquery

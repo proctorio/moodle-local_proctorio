@@ -34,7 +34,6 @@ require_once(__DIR__ . '/../lib.php');
  * @covers ::local_proctorio_get_attempt_info
  */
 class attempt_info_test extends \advanced_testcase {
-
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
@@ -42,6 +41,12 @@ class attempt_info_test extends \advanced_testcase {
 
     /**
      * Insert a minimal quiz_attempts row using a real question_usage for the uniqueid FK.
+     *
+     * @param int $quizid Quiz instance id.
+     * @param int $cmid Course module id for the quiz context.
+     * @param int $userid User id the attempt belongs to.
+     * @param string $state Attempt state, e.g. 'inprogress' or 'finished'.
+     * @param int $attempt Attempt number.
      */
     private function insert_quiz_attempt(int $quizid, int $cmid, int $userid, string $state, int $attempt): void {
         global $DB;
