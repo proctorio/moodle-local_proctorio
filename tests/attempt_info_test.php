@@ -33,7 +33,7 @@ require_once(__DIR__ . '/../lib.php');
  *
  * @covers ::local_proctorio_get_attempt_info
  */
-class attempt_info_test extends \advanced_testcase {
+final class attempt_info_test extends \advanced_testcase {
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();

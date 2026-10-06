@@ -35,7 +35,7 @@ use core_privacy\local\request\userlist;
  *
  * @covers \local_proctorio\privacy\provider
  */
-class privacy_test extends \core_privacy\tests\provider_testcase {
+final class privacy_test extends \core_privacy\tests\provider_testcase {
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();

@@ -29,7 +29,7 @@ namespace local_proctorio;
  *
  * @covers \local_proctorio\attempt_fetcher
  */
-class attempt_fetcher_test extends \advanced_testcase {
+final class attempt_fetcher_test extends \advanced_testcase {
     /** @var \ReflectionClass */
     private \ReflectionClass $reflection;
 
