@@ -46,7 +46,7 @@ final class attempt_fetcher_test extends \advanced_testcase {
      * @param mixed ...$args Arguments to pass through to the method.
      * @return mixed The method's return value.
      */
-    private function call(string $method, mixed ...$args): mixed {
+    private function call(string $method, ...$args) {
         $m = $this->reflection->getMethod($method);
         $m->setAccessible(true);
         return $m->invoke(null, ...$args);
@@ -174,6 +174,7 @@ final class attempt_fetcher_test extends \advanced_testcase {
 
         $result = $this->call('parse_quiz_configurations', $config, 'customquiz');
         $this->assertNull($result);
+        $this->assertDebuggingCalled();
     }
 
     public function test_parse_quiz_configurations_rejects_stacked_statements(): void {
@@ -183,6 +184,7 @@ final class attempt_fetcher_test extends \advanced_testcase {
 
         $result = $this->call('parse_quiz_configurations', $config, 'customquiz');
         $this->assertNull($result);
+        $this->assertDebuggingCalled();
     }
 
     public function test_parse_quiz_configurations_rejects_query_not_starting_with_select(): void {
@@ -191,6 +193,7 @@ final class attempt_fetcher_test extends \advanced_testcase {
 
         $result = $this->call('parse_quiz_configurations', $config, 'customquiz');
         $this->assertNull($result);
+        $this->assertDebuggingCalled();
     }
 
     public function test_parse_quiz_configurations_rejects_blocked_keyword_in_select(): void {
@@ -200,6 +203,7 @@ final class attempt_fetcher_test extends \advanced_testcase {
 
         $result = $this->call('parse_quiz_configurations', $config, 'customquiz');
         $this->assertNull($result);
+        $this->assertDebuggingCalled();
     }
 
     public function test_parse_quiz_configurations_strips_comments_from_accepted_query(): void {
@@ -305,6 +309,7 @@ final class attempt_fetcher_test extends \advanced_testcase {
 
         $result = $this->call('execute_custom_query', $sql, 1, 1);
         $this->assertNull($result);
+        $this->assertDebuggingCalled();
     }
 
     public function test_execute_custom_query_returns_null_when_aliases_missing_from_result(): void {
@@ -315,6 +320,7 @@ final class attempt_fetcher_test extends \advanced_testcase {
 
         $result = $this->call('execute_custom_query', $sql, $user->id, 0);
         $this->assertNull($result);
+        $this->assertDebuggingCalled();
     }
 
     // -------------------------------------------------------------------------
