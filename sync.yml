@@ -1,0 +1,24 @@
+trigger:
+  branches:
+    include:
+    - main
+
+# Never build pull requests. Azure Pipelines builds every PR of a
+# GitHub-bound pipeline by default, and a PR run checks out the PR's
+# temporary test merge; the import must only ever take GitHub main. The
+# shared sync template also refuses anything but main's tip.
+pr: none
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: Plumbing/core-templates
+    - repository: moodle-local_proctorio
+      type: git
+      name: Open/moodle-local_proctorio
+
+stages:
+- template: stages/sync/sync.yml@templates  # Template reference
+  parameters:
+    checkout: moodle-local_proctorio
