@@ -1,0 +1,88 @@
+name: release
+
+# Canonical source of this workflow is the internal Open repo; the sync
+# mirrors it here. For every release/* tag it publishes the plugin: a GitHub
+# release with the installable zip attached, then the same version submitted
+# to the Moodle Marketplace. The internal pipeline stamps version.php on the
+# tagged commit, so the tag must match $plugin->release exactly.
+
+on:
+  push:
+    tags:
+      - "release/*"
+  # GitHub skips a tag push when the tagged commit's message contains
+  # [skip ci], and tags cut before this workflow existed do not carry it.
+  # Recover either by running this by hand with the release tag as input;
+  # the current workflow then runs against that tag's tree.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to publish, e.g. release/2.4.6"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  github-release:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      marketplace: ${{ steps.tag.outputs.marketplace }}
+    steps:
+      - name: Resolve the release tag
+        id: tag
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          HAS_MARKETPLACE_TOKEN: ${{ secrets.MOODLE_MARKETPLACE_TOKEN != '' }}
+        run: |
+          tag="${INPUT_TAG:-$GITHUB_REF_NAME}"
+          case "$tag" in
+            release/*) ;;
+            *) echo "::error::$tag is not a release/* tag"; exit 1 ;;
+          esac
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "marketplace=$HAS_MARKETPLACE_TOKEN" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.tag.outputs.tag }}
+      - name: Verify the tag matches version.php
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          release="$(sed -nE 's/^[$]plugin->release[^0-9]*([0-9.]+).*/\1/p' version.php)"
+          if [ "$release" != "${TAG#release/}" ]; then
+            echo "::error::Tag $TAG does not match \$plugin->release '$release'"
+            exit 1
+          fi
+      # Same layout the Marketplace submission below builds: git archive
+      # honours .gitattributes export-ignore, and the root folder is the
+      # plugin directory name (local_proctorio installs to local/proctorio).
+      - name: Build the plugin zip
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: git archive --format=zip --prefix=proctorio/ -o "local_proctorio-${TAG#release/}.zip" HEAD
+      # The release body doubles as the Marketplace release notes.
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          ver="${TAG#release/}"
+          gh release create "$TAG" "local_proctorio-${ver}.zip" --title "v${ver}" --notes-file CHANGES --verify-tag \
+            || gh release upload "$TAG" "local_proctorio-${ver}.zip" --clobber
+
+  # Skipped until the MOODLE_MARKETPLACE_TOKEN repository secret exists
+  # (created at https://marketplace.moodle.com/account/security by a
+  # maintainer of the listing). The tag is passed explicitly: the reusable
+  # workflow derives it from the last path segment of the ref otherwise,
+  # which turns release/2.4.6 into a tag that does not exist. Pinned to a
+  # commit because it receives the token.
+  marketplace:
+    needs: github-release
+    if: needs.github-release.outputs.marketplace == 'true'
+    uses: moodlehq/moodle-plugin-release/.github/workflows/moodle-release.yml@4467fd51a0e7f4bcda665eb2f8fb00365d10a39d
+    with:
+      tag: ${{ needs.github-release.outputs.tag }}
+    secrets:
+      MOODLE_MARKETPLACE_TOKEN: ${{ secrets.MOODLE_MARKETPLACE_TOKEN }}
