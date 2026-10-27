@@ -86,7 +86,7 @@ if ($hassiteconfig) {
             'modulename_value' => 'quiz',
             'quiz_overrides' => '#quizoverrides',
             'report_page' => 'report.php',
-            'start_attempt_file' => 'mod/quiz/startattempt.php',
+            'start_attempt_file' => 'startattempt.php',
             'review_attempt_page' => 'mod/quiz/review.php',
             'take_exam_attempt_page' => 'mod/quiz/startattempt.php',
             'quiz_landing_page' => 'mod/quiz/view.php',
